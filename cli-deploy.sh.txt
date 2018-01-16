@@ -1,0 +1,17 @@
+aws lambda create-function \
+--region ap-northeast-1 \
+--function-name AwsLambdaTest \
+--code S3Bucket=upload-for-lambda-1,S3Key=AwsLambdaTest.zip \
+--role arn:aws:iam::088010441660:role/service-role/hello-world-python-role \
+--handler example.Hello::myHandler \
+--runtime java8
+
+#--zip-file
+#--profile adminuser
+#--vpc-config SubnetIds=comma-separated-subnet-ids,SecurityGroupIds=default-vpc-security-group-id
+
+
+aws lambda update-function-code \
+--function-name AwsLambdaTest \
+--zip-file fileb://AwsLambdaTest.zip
+

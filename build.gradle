@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+tasks.eclipse.dependsOn(cleanEclipse)
+
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+//    compile group: 'ch.qos.logback', name: 'logback-classic', version: 'latest.release'
+    compile group: 'junit', name: 'junit', version:'latest.release'
+    compile group: 'org.hamcrest', name: 'hamcrest-library', version:'latest.release'
+//    compile group: 'com.amazonaws', name: 'aws-java-sdk', version:'latest.release'
+//    compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version:'latest.release'
+    compile group: 'com.amazonaws', name: 'aws-lambda-java-core', version:'latest.release'
+    compile group: 'com.amazonaws', name: 'aws-lambda-java-events', version:'latest.release'
+}
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+tasks.withType(Test) {
+  systemProperties System.properties
+}
+
+task buildZip(type: Zip) {
+
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip
+
